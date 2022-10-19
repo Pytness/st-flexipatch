@@ -1,7 +1,8 @@
 # st version
 VERSION = 0.9
 
-# Customize below to fit your system
+# Optimize for speed
+CFLAGS = -O2 
 
 # paths
 PREFIX = /usr/local
@@ -39,7 +40,7 @@ LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft ${XRENDER} ${XCURSOR}\
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS)
+STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS) 
 STLDFLAGS = $(LIBS) $(LDFLAGS)
 
 # OpenBSD:
@@ -50,4 +51,4 @@ STLDFLAGS = $(LIBS) $(LDFLAGS)
 #MANPREFIX = ${PREFIX}/man
 
 # compiler and linker
-# CC = c99
+CC = gcc
