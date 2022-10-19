@@ -427,15 +427,17 @@ static Shortcut shortcuts[] = {
 #if VIM_BROWSE_PATCH
     { MODKEY, XK_c, normalMode, { .i = 0 } },
 #endif  // VIM_BROWSE_PATCH
+#if FULLSCREEN_PATCH
+    { XK_NO_MOD, XK_F11, fullscreen, { .i = 0 } },
+    { MODKEY, XK_Return, fullscreen, { .i = 0 } },
+#endif  // FULLSCREEN_PATCH
 };
 
 /*
  * Special keys (change & recompile st.info accordingly)
  *
- * Mask value:
- * * Use XK_ANY_MOD to match the key no matter modifiers state
- * * Use XK_NO_MOD to match the key alone (no modifiers)
- * appkey value:
+ * Mask value: * Use XK_ANY_MOD to match the key no matter modifiers state * Use XK_NO_MOD to match the key alone (no
+ * modifiers) appkey value:
  * * 0: no value
  * * > 0: keypad application mode enabled
  * *   = 2: term.numlock = 1
