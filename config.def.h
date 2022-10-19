@@ -289,7 +289,7 @@ ResourcePref resources[] = {
     { "color13",        STRING,  &colorname[13] },
     { "color14",        STRING,  &colorname[14] },
     { "color15",        STRING,  &colorname[15] },
-    { "background",     STRING,  &colorname[258]},
+    { "background",     STRING,  &colorname[257]},
     { "foreground",     STRING,  &colorname[259]},
     { "cursorColor",    STRING,  &colorname[256]},
     { "termname",       STRING,  &termname      },
