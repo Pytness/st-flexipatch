@@ -35,6 +35,9 @@ st: $(OBJ)
 clean:
 	rm -f st $(OBJ) st-$(VERSION).tar.gz
 
+clean-all: clean
+	rm -f config.h patches.h
+
 dist: clean
 	mkdir -p st-$(VERSION)
 	cp -R FAQ LEGACY TODO LICENSE Makefile README config.mk\
@@ -61,3 +64,4 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/share/applications/st.desktop # desktop-entry patch
 
 .PHONY: all options clean dist install uninstall
+
