@@ -1691,8 +1691,10 @@ tclearregion(int x1, int y1, int x2, int y2)
 		term.dirty[y] = 1;
 		for (x = x1; x <= x2; x++) {
 			gp = &term.line[y][x];
+            #if !NON_SELECTION_CLEAR_PATCH
 			if (selected(x, y))
-				selclear();
+			    selclear();
+            #endif // !NON_SELECTION_CLEAR_PATCH
 			gp->fg = term.c.attr.fg;
 			gp->bg = term.c.attr.bg;
 			gp->mode = 0;

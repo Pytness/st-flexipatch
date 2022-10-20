@@ -239,6 +239,12 @@
  */
 #define NEWTERM_PATCH 0
 
+/*
+ * Prevent clearing of the selection when a partial screen update occurs.
+ *
+ */
+#define NON_SELECTION_CLEAR_PATCH 1
+
 /* This patch will set the _MOTIF_WM_HINTS property for the st window which, if the window manager
  * respects it, will show the st window without window decorations.
  *
