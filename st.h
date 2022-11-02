@@ -313,6 +313,7 @@ void tfulldirt(void);
 
 #if FULLSCREEN_PATCH
 void fullscreen(const Arg*);
+void sigusr2_fullscreen(int sig);
 #endif // FULLSCREEN_PATCH
 void printscreen(const Arg*);
 void printsel(const Arg*);
