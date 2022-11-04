@@ -313,12 +313,6 @@ void draw(void);
 void drawregion(int, int, int, int);
 void tfulldirt(void);
 
-#if FULLSCREEN_PATCH
-void set_fullscreen();
-void unset_fullscreen();
-void toggle_fullscreen(const Arg*);
-void sigusr2_fullscreen(int sig);
-#endif // FULLSCREEN_PATCH
 void printscreen(const Arg*);
 void printsel(const Arg*);
 void sendbreak(const Arg*);
