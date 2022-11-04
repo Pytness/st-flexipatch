@@ -898,7 +898,7 @@ void set_fullscreen_status(int status) {
    	XEvent ev;
 
 	memset(&ev, 0, sizeof(ev));
-	
+
 	ev.xclient.type = ClientMessage;
 	ev.xclient.message_type = xw.netwmstate;
 	ev.xclient.display = xw.dpy;
@@ -907,7 +907,7 @@ void set_fullscreen_status(int status) {
 	ev.xclient.data.l[0] = status;
 	ev.xclient.data.l[1] = xw.netwmfullscreen;
 
-	XSendEvent(xw.dpy, DefaultRootWindow(xw.dpy), False, SubstructureNotifyMask|SubstructureRedirectMask, &ev); 
+	XSendEvent(xw.dpy, DefaultRootWindow(xw.dpy), False, SubstructureNotifyMask|SubstructureRedirectMask, &ev);
 }
 
 void set_fullscreen(void) {
@@ -1622,10 +1622,11 @@ xinit(int cols, int rows)
 	XChangeProperty(xw.dpy, xw.win, xw.netwmpid, XA_CARDINAL, 32,
 			PropModeReplace, (uchar *)&thispid, 1);
 
-    #if FULLSCREEN_PATCH
+	#if FULLSCREEN_PATCH
 	xw.netwmstate = XInternAtom(xw.dpy, "_NET_WM_STATE", False);
 	xw.netwmfullscreen = XInternAtom(xw.dpy, "_NET_WM_STATE_FULLSCREEN", False);
-    #endif
+	#endif // FULLSCREEN_PATCH
+
 	win.mode = MODE_NUMLOCK;
 	resettitle();
 	xhints();
@@ -3141,7 +3142,7 @@ void
 kpress(XEvent *ev)
 {
 	XKeyEvent *e = &ev->xkey;
-	KeySym ksym;
+	KeySym ksym = NoSymbol;
 	char buf[64], *customkey;
 	int len, screen;
 	Rune c;
@@ -3176,10 +3177,13 @@ kpress(XEvent *ev)
 	if (IS_SET(MODE_KBDLOCK))
 		return;
 
-	if (xw.ime.xic)
+	if (xw.ime.xic) {
 		len = XmbLookupString(xw.ime.xic, e, buf, sizeof buf, &ksym, &status);
-	else
+		if (status == XBufferOverflow)
+			return;
+	} else {
 		len = XLookupString(e, buf, sizeof buf, &ksym, NULL);
+	}
 	#if KEYBOARDSELECT_PATCH
 	if ( IS_SET(MODE_KBDSELECT) ) {
 		if ( match(XK_NO_MOD, e->state) ||
@@ -3491,7 +3495,7 @@ main(int argc, char *argv[])
     #if FULLSCREEN_PATCH
     case 'F':
         opt_fullscreen = 1;
-        break; 
+        break;
     #endif // FULLSCREEN_PATCH
 	case 'e':
 		if (argc > 0)

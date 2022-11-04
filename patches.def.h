@@ -182,6 +182,13 @@
 
 #define FULLSCREEN_PATCH 1
 
+/* This patch adds the ability to toggle st into fullscreen mode.
+ * Two key bindings are defined: F11 which is typical with other applications and Alt+Enter
+ * which matches the default xterm behavior.
+ * https://st.suckless.org/patches/fullscreen/
+ */
+#define FULLSCREEN_PATCH 0
+
 /* Hide the X cursor whenever a key is pressed and show it back when the mouse is moved in
  * the terminal window.
  * https://st.suckless.org/patches/hidecursor/

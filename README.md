@@ -1,4 +1,4 @@
-Similar to [dwm-flexipatch](https://github.com/bakkeby/dwm-flexipatch) this st 0.9 (68d1ad9, 2022-10-04) project has a different take on st patching. It uses preprocessor directives to decide whether or not to include a patch during build time. Essentially this means that this build, for better or worse, contains both the patched _and_ the original code. The aim being that you can select which patches to include and the build will contain that code and nothing more.
+Similar to [dwm-flexipatch](https://github.com/bakkeby/dwm-flexipatch) this st 0.9 (e5e9598, 2022-10-25) project has a different take on st patching. It uses preprocessor directives to decide whether or not to include a patch during build time. Essentially this means that this build, for better or worse, contains both the patched _and_ the original code. The aim being that you can select which patches to include and the build will contain that code and nothing more.
 
 For example to include the `alpha` patch then you would only need to flip this setting from 0 to 1 in [patches.h](https://github.com/bakkeby/st-flexipatch/blob/master/patches.def.h):
 ```c
@@ -14,6 +14,8 @@ Refer to [https://st.suckless.org/](https://st.suckless.org/) for details on the
 ---
 
 ### Changelog:
+
+2022-10-24 - Added the fullscreen patch
 
 2022-08-28 - Added the use XftFontMatch patch
 
@@ -173,6 +175,9 @@ Refer to [https://st.suckless.org/](https://st.suckless.org/) for details on the
 
    - [~force-redraw-after-keypress~](https://lists.suckless.org/hackers/2004/17221.html)
       - ~this patch forces the terminal to check for new data on the tty on keypress with the aim of reducing input latency~
+
+   - [fullscreen](https://st.suckless.org/patches/fullscreen/)
+      - allows the st window to go into fullscreen mode
 
    - [gradient](https://st.suckless.org/patches/gradient/)
       - adds gradient transparency to st
