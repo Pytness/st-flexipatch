@@ -757,7 +757,7 @@ sigusr1_reload(int sig)
 
 #if FULLSCREEN_PATCH
 void sigusr2_fullscreen(int sig) {
-    fullscreen(NULL);
+    set_fullscreen();
     signal(SIGUSR2, sigusr2_fullscreen);
 }
 #endif // FULLSCREEN_PATCH
@@ -894,10 +894,8 @@ xresize(int col, int row)
 }
 
 #if FULLSCREEN_PATCH
-void
-fullscreen(const Arg *arg)
-{
-	XEvent ev;
+void set_fullscreen_status(int status) {
+   	XEvent ev;
 
 	memset(&ev, 0, sizeof(ev));
 	
@@ -906,10 +904,23 @@ fullscreen(const Arg *arg)
 	ev.xclient.display = xw.dpy;
 	ev.xclient.window = xw.win;
 	ev.xclient.format = 32;
-	ev.xclient.data.l[0] = 2; /* _NET_WM_STATE_TOGGLE */
+	ev.xclient.data.l[0] = status;
 	ev.xclient.data.l[1] = xw.netwmfullscreen;
 
-	XSendEvent(xw.dpy, DefaultRootWindow(xw.dpy), False, SubstructureNotifyMask|SubstructureRedirectMask, &ev);
+	XSendEvent(xw.dpy, DefaultRootWindow(xw.dpy), False, SubstructureNotifyMask|SubstructureRedirectMask, &ev); 
+}
+
+void set_fullscreen(void) {
+    set_fullscreen_status(1);
+}
+
+void unset_fullscreen(void) {
+    set_fullscreen_status(0);
+}
+
+void toggle_fullscreen(const Arg *arg)
+{
+    set_fullscreen_status(2);
 }
 #endif // FULLSCREEN_PATCH
 
@@ -3561,7 +3572,7 @@ run:
 
     #if FULLSCREEN_PATCH
     if (opt_fullscreen)
-        fullscreen(NULL);
+        toggle_fullscreen(NULL);
     #endif // FULLSCREEN_PATCH
 
 	run();

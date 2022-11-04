@@ -428,8 +428,7 @@ static Shortcut shortcuts[] = {
     { MODKEY, XK_c, normalMode, { .i = 0 } },
 #endif  // VIM_BROWSE_PATCH
 #if FULLSCREEN_PATCH
-    { XK_NO_MOD, XK_F11, fullscreen, { .i = 0 } },
- // { MODKEY, XK_Return, fullscreen, { .i = 0 } },
+    { XK_NO_MOD, XK_F11, toggle_fullscreen, { .i = 0 } },
 #endif  // FULLSCREEN_PATCH
 };
 
