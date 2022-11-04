@@ -206,10 +206,10 @@ const unsigned int amountNmKeys = sizeof(nmKeys) / sizeof(*nmKeys);
 /// Style of the {command, search} string shown in the right corner (y,v,V,/)
 Glyph styleSearch = { ' ', ATTR_ITALIC | ATTR_BOLD_FAINT, 7, 16 };
 Glyph style[]     = {
-        {' ',  ATTR_ITALIC | ATTR_FAINT, 15,  16},
-        { ' ', ATTR_ITALIC,              232, 11},
-        { ' ', ATTR_ITALIC,              232, 4 },
-        { ' ', ATTR_ITALIC,              232, 12}
+    {' ',  ATTR_ITALIC | ATTR_FAINT, 15,  16},
+    { ' ', ATTR_ITALIC,              232, 11},
+    { ' ', ATTR_ITALIC,              232, 4 },
+    { ' ', ATTR_ITALIC,              232, 12}
 };
 #endif // VIM_BROWSE_PATCH
 
@@ -329,13 +329,13 @@ static uint forcemousemod = ShiftMask;
 static MouseShortcut mshortcuts[] = {
   /* mask                 button   function        argument       release  screen */
 #if CLIPBOARD_PATCH
-    {XK_ANY_MOD, Button2,     clippaste,       { .i = 0 }, 1    },
+    { XK_ANY_MOD, Button2, clippaste, { .i = 0 }, 1 },
 #else
     { XK_ANY_MOD, Button2, selpaste, { .i = 0 }, 1 },
 #endif  // CLIPBOARD_PATCH
 #if SCROLLBACK_MOUSE_PATCH
-    {  ShiftMask,   Button4,   kscrollup,      { .i = 1 },          0, S_PRI },
-    { ShiftMask,   Button5, kscrolldown,      { .i = 1 },          0, S_PRI },
+    { ShiftMask, Button4, kscrollup, { .i = 1 }, 0, S_PRI },
+    { ShiftMask, Button5, kscrolldown, { .i = 1 }, 0, S_PRI },
 #elif UNIVERSCROLL_PATCH
     { XK_ANY_MOD, Button4, ttysend, { .s = "\033[5;2~" }, 0, S_PRI },
     { XK_ANY_MOD, Button5, ttysend, { .s = "\033[6;2~" }, 0, S_PRI },
@@ -344,10 +344,10 @@ static MouseShortcut mshortcuts[] = {
     { ShiftMask, Button5, ttysend, { .s = "\033[6;2~" } },
 #endif  // SCROLLBACK_MOUSE_PATCH
 #if SCROLLBACK_MOUSE_ALTSCREEN_PATCH
-    { XK_NO_MOD,   Button4,   kscrollup,      { .i = 1 },          0, S_PRI },
-    { XK_NO_MOD,   Button5, kscrolldown,      { .i = 1 },          0, S_PRI },
-    { XK_ANY_MOD,   Button4,     ttysend, { .s = "\031" },          0, S_ALT },
-    { XK_ANY_MOD,   Button5,     ttysend, { .s = "\005" },          0, S_ALT },
+    { XK_NO_MOD, Button4, kscrollup, { .i = 1 }, 0, S_PRI },
+    { XK_NO_MOD, Button5, kscrolldown, { .i = 1 }, 0, S_PRI },
+    { XK_ANY_MOD, Button4, ttysend, { .s = "\031" }, 0, S_ALT },
+    { XK_ANY_MOD, Button5, ttysend, { .s = "\005" }, 0, S_ALT },
 #else
     { XK_ANY_MOD, Button4, ttysend, { .s = "\031" } },
     { XK_ANY_MOD, Button5, ttysend, { .s = "\005" } },
@@ -372,64 +372,64 @@ static char* setbgcolorcmd[] = { "/bin/sh", "-c", "printf '\033]11;#008000\007'"
 
 static Shortcut shortcuts[] = {
   /* mask                 keysym          function         argument   screen */
-    {XK_ANY_MOD,              XK_Break,   sendbreak,     { .i = 0 }                      },
-    { ControlMask,            XK_Print,   toggleprinter, { .i = 0 }                      },
-    { ShiftMask,              XK_Print,   printscreen,   { .i = 0 }                      },
-    { XK_ANY_MOD,             XK_Print,   printsel,      { .i = 0 }                      },
-    { TERMMOD,                XK_Prior,   zoom,          { .f = +1 }                     },
-    { TERMMOD,                XK_Next,    zoom,          { .f = -1 }                     },
-    { TERMMOD,                XK_Home,    zoomreset,     { .f = 0 }                      },
-    { TERMMOD,                XK_C,       clipcopy,      { .i = 0 }                      },
-    { TERMMOD,                XK_V,       clippaste,     { .i = 0 }                      },
+    { XK_ANY_MOD, XK_Break, sendbreak, { .i = 0 } },
+    { ControlMask, XK_Print, toggleprinter, { .i = 0 } },
+    { ShiftMask, XK_Print, printscreen, { .i = 0 } },
+    { XK_ANY_MOD, XK_Print, printsel, { .i = 0 } },
+    { TERMMOD, XK_Prior, zoom, { .f = +1 } },
+    { TERMMOD, XK_Next, zoom, { .f = -1 } },
+    { TERMMOD, XK_Home, zoomreset, { .f = 0 } },
+    { TERMMOD, XK_C, clipcopy, { .i = 0 } },
+    { TERMMOD, XK_V, clippaste, { .i = 0 } },
 #if ALPHA_PATCH
-    { TERMMOD,                XK_O,       changealpha,   { .f = +0.05 }                  },
-    { TERMMOD,                XK_P,       changealpha,   { .f = -0.05 }                  },
+    { TERMMOD, XK_O, changealpha, { .f = +0.05 } },
+    { TERMMOD, XK_P, changealpha, { .f = -0.05 } },
 #if ALPHA_FOCUS_HIGHLIGHT_PATCH
   //{ TERMMOD,              XK_,           changealphaunfocused, {.f = +0.05} },
   //{ TERMMOD,              XK_,           changealphaunfocused, {.f = -0.05} },
 #endif  // ALPHA_FOCUS_HIGHLIGHT_PATCH
 #endif  // ALPHA_PATCH
 #if FULLSCREEN_PATCH
-    { XK_NO_MOD,              XK_F11,     toggle_fullscreen,    { .i = 0 }                      },
-    { MODKEY,                 XK_Return,  toggle_fullscreen,    { .i = 0 }                      },
+    { XK_NO_MOD, XK_F11, toggle_fullscreen, { .i = 0 } },
+    { MODKEY, XK_Return, toggle_fullscreen, { .i = 0 } },
 #endif  // FULLSCREEN_PATCH
 #if SCROLLBACK_PATCH
-    { ShiftMask,              XK_Page_Up, kscrollup,     { .i = -1 },                      S_PRI },
-    { ShiftMask,                      XK_Page_Down,                       kscrolldown,   { .i = -1 },  S_PRI },
+    { ShiftMask, XK_Page_Up, kscrollup, { .i = -1 }, S_PRI },
+    { ShiftMask, XK_Page_Down, kscrolldown, { .i = -1 }, S_PRI },
 #endif  // SCROLLBACK_PATCH
 #if CLIPBOARD_PATCH
-    { TERMMOD,                  XK_Y,                           clippaste,                                 { .i = 0 }                                          },
-    { ShiftMask,             XK_Insert,                      clippaste,{ .i = 0 }},
+    { TERMMOD, XK_Y, clippaste, { .i = 0 } },
+    { ShiftMask, XK_Insert, clippaste, { .i = 0 } },
 #else
     { TERMMOD, XK_Y, selpaste, { .i = 0 } },          { ShiftMask, XK_Insert, selpaste, { .i = 0 } },
 #endif  // CLIPBOARD_PATCH
-    { TERMMOD,             XK_Num_Lock,                      numlock,                                   { .i = 0 }                                                                                 },
+    { TERMMOD, XK_Num_Lock, numlock, { .i = 0 } },
 #if COPYURL_PATCH || COPYURL_HIGHLIGHT_SELECTED_URLS_PATCH
-    { MODKEY,             XK_l,                      copyurl,{ .i = 0 }},
+    { MODKEY, XK_l, copyurl, { .i = 0 } },
 #endif  // COPYURL_PATCH
 #if OPENCOPIED_PATCH
-    { MODKEY,             XK_o,                      opencopied,                                   { .v = "xdg-open" }                                                                                                                         },
+    { MODKEY, XK_o, opencopied, { .v = "xdg-open" } },
 #endif  // OPENCOPIED_PATCH
 #if NEWTERM_PATCH
-    { TERMMOD,    XK_Return,             newterm,{ .i = 0 }},
+    { TERMMOD, XK_Return, newterm, { .i = 0 } },
 #endif  // NEWTERM_PATCH
 #if EXTERNALPIPE_PATCH
-    { TERMMOD,             XK_U,                      externalpipe,                                            { .v = openurlcmd }                                                                                                                                                                                },
+    { TERMMOD, XK_U, externalpipe, { .v = openurlcmd } },
 #if EXTERNALPIPEIN_PATCH
-    { TERMMOD,    XK_M,             externalpipein,{ .v = setbgcolorcmd }},
+    { TERMMOD, XK_M, externalpipein, { .v = setbgcolorcmd } },
 #endif  // EXTERNALPIPEIN_PATCH
 #endif  // EXTERNALPIPE_PATCH
 #if KEYBOARDSELECT_PATCH
-    { TERMMOD, XK_Escape,          keyboard_select,                                         { 0 }                                                                                                                                                                                                                                               },
+    { TERMMOD, XK_Escape, keyboard_select, { 0 } },
 #endif  // KEYBOARDSELECT_PATCH
 #if ISO14755_PATCH
-    { TERMMOD,                  XK_I,                           iso14755,{ .i = 0 }},
+    { TERMMOD, XK_I, iso14755, { .i = 0 } },
 #endif  // ISO14755_PATCH
 #if INVERT_PATCH
-    { TERMMOD,             XK_X,                      invert,                                    { 0 }                                                                                                                                                                                                                                                                                               },
+    { TERMMOD, XK_X, invert, { 0 } },
 #endif  // INVERT_PATCH
 #if VIM_BROWSE_PATCH
-    { MODKEY,                  XK_c,                           normalMode,{ .i = 0 }},
+    { MODKEY, XK_c, normalMode, { .i = 0 } },
 #endif  // VIM_BROWSE_PATCH
 };
 
