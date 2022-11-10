@@ -1,7 +1,9 @@
 # We'll use defaults from the LLVM style, but with 4 columns indentation.
 BasedOnStyle: LLVM
-IndentWidth: 4
-BreakBeforeBraces: Linux
+UseTab: Always
+IndentWidth: 8
+TabWidth: 8
+# BreakBeforeBraces: Linux
 AlwaysBreakTemplateDeclarations: Yes
 MaxEmptyLinesToKeep: 2
 ColumnLimit: 120
@@ -47,4 +49,3 @@ FixNamespaceComments: false
 IfMacros:
   - N_DEBUG
   - DEBUG
-
