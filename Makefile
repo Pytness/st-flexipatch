@@ -35,7 +35,7 @@ st: $(OBJ)
 clean:
 	rm -f st $(OBJ) st-$(VERSION).tar.gz
 
-clean-all: clean
+cleanall: clean
 	rm -f config.h patches.h
 
 dist: clean
