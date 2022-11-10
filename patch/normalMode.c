@@ -85,16 +85,24 @@ static inline void applyPos(Pos p)
 /// Find string in history buffer, and provide string-match-lookup for highlighting matches
 static int highlighted(int x, int y)
 {
-    const int s = term.row * term.col, i = y * term.col + x, sz = size(&searchStr);
+    const int s  = term.row * term.col;
+    const int i  = y * term.col + x;
+    const int sz = size(&searchStr);
+
     return sz && i < s && mark[i] != sz && i + mark[i] < s && !mark[i + mark[i]];
 }
 
 static void markSearchMatches(int all)
 {
-    int sz = size(&searchStr), ox = 0, oy = 0, oi = 0;
+    int sz = size(&searchStr);
+    int ox = 0;
+    int oy = 0;
+    int oi = 0;
+
     for (int y = 0; sz && all && y < term.row; ++y)
         for (int x = 0; x < term.col; ++x)
             term.dirty[y] |= highlighted(x, y);
+
     for (int y = 0, wi = 0, owi = 0, i = 0; sz && y < term.row; ++y)
         for (int x = 0; x < term.col; ++x, wi %= sz, ++i, owi = wi)
             if (all || term.dirty[y]) {
@@ -104,6 +112,7 @@ static void markSearchMatches(int all)
                 else if (!wi && owi)
                     x = ox, y = oy, i = oi;
             }
+
     for (int y = 0; sz && all && y < term.row; ++y)
         for (int x = 0; x < term.col; ++x)
             term.dirty[y] |= highlighted(x, y);
@@ -183,70 +192,126 @@ static ExitState expandExpression(char l)
 ExitState executeMotion(const char cs, const KeySym* const ks)
 {
     state.m.c = state.m.c < 1u ? 1u : state.m.c;
-    if (ks && *ks == XK_d)
-        historyMove(0, 0, term.row / 2);
-    else if (ks && *ks == XK_u)
-        historyMove(0, 0, -term.row / 2);
-    else if (ks && *ks == XK_f)
-        historyMove(0, 0, term.row - 1 + (term.c.y = 0));
-    else if (ks && *ks == XK_b)
-        historyMove(0, 0, -(term.c.y = term.row - 1));
-    else if (ks && *ks == XK_h)
-        overlay = !overlay;
-    else if (cs == 'K')
-        historyMove(0, 0, -(int)state.m.c);
-    else if (cs == 'J')
-        historyMove(0, 0, (int)state.m.c);
-    else if (cs == 'k')
-        historyMove(0, -(int)state.m.c, 0);
-    else if (cs == 'j')
-        historyMove(0, (int)state.m.c, 0);
-    else if (cs == 'h')
-        historyMove(-(int)state.m.c, 0, 0);
-    else if (cs == 'l')
-        historyMove((int)state.m.c, 0, 0);
-    else if (cs == 'H')
-        term.c.y = 0;
-    else if (cs == 'M')
-        term.c.y = term.bot / 2;
-    else if (cs == 'L')
-        term.c.y = term.bot;
-    else if (cs == 's' || cs == 'S')
-        altToggle = cs == 's' ? !altToggle : 1;
-    else if (cs == 'G' || cs == 'g') {
-        if (cs == 'G')
-            term.c = c[0] = c[IS_SET(MODE_ALTSCREEN) + 1];
-        if (!IS_SET(MODE_ALTSCREEN))
-            term.line = &buf[histOff = insertOff];
-    } else if (cs == '0')
-        term.c.x = 0;
-    else if (cs == '$')
-        term.c.x = term.col - 1;
-    else if (cs == 't')
-        sel.type = sel.type == SEL_REGULAR ? SEL_RECTANGULAR : SEL_REGULAR;
-    else if (cs == 'n' || cs == 'N') {
-        const int d = ((cs == 'N') != (state.m.search == bw)) ? -1 : 1;
-        for (uint32_t i = state.m.c; i && findString(d, 0); --i)
-            ;
-    } else if (contains(cs, "wWeEbB", 6)) {
-        const int low = cs <= 90, off = tolower(cs) != 'w', sgn = (tolower(cs) == 'b') ? -1 : 1;
-        const size_t l = strlen(wDelL), s = strlen(wDelS), maxIt = rows() * term.col;
-        for (int it = 0, on = 0; state.m.c > 0 && it < maxIt; ++it) {
-            // If an offset is to be performed in beginning or not in beginning, move in history.
-            if ((off || it) && historyMove(sgn, 0, 0))
-                break;
-            // Determine if the category of the current letter changed since last iteration.
-            int n     = 1 << (contains(cChar(), wDelS, s) ? (2 - low) : !contains(cChar(), wDelL, l)),
-                found = (on |= n) ^ n && ((off ? on ^ n : n) != 1);
-            // If a reverse offset is to be performed and this is the last letter:
-            if (found && off)
-                historyMove(-sgn, 0, 0);
-            // Terminate iteration: reset #it and old n value #on and decrease operation count:
-            if (found)
-                it = -1, on = 0, --state.m.c;
+
+    int has_failed = 0;
+
+    if (ks != NULL) {
+        switch (*ks) {
+        case XK_d:
+            historyMove(0, 0, term.row / 2);
+            break;
+        case XK_u:
+            historyMove(0, 0, -term.row / 2);
+            break;
+        case XK_f:
+            historyMove(0, 0, term.row - 1 + (term.c.y = 0));
+            break;
+        case XK_b:
+            historyMove(0, 0, -(term.c.y = term.row - 1));
+            break;
+        case XK_h:
+            overlay = !overlay;
+            break;
+        default:
+            has_failed = 1;
+            break;
         }
-    } else
+
+    } else {
+
+        switch (cs) {
+        case 'K':
+            historyMove(0, 0, -(int)state.m.c);
+            break;
+        case 'J':
+            historyMove(0, 0, (int)state.m.c);
+            break;
+        case 'k':
+            historyMove(0, -(int)state.m.c, 0);
+            break;
+        case 'j':
+            historyMove(0, (int)state.m.c, 0);
+            break;
+        case 'h':
+            historyMove(-(int)state.m.c, 0, 0);
+            break;
+        case 'l':
+            historyMove((int)state.m.c, 0, 0);
+            break;
+        case 'H':
+            term.c.y = 0;
+            break;
+        case 'M':
+            term.c.y = term.bot / 2;
+            break;
+        case 'L':
+            term.c.y = term.bot;
+            break;
+        case 's':
+        case 'S':
+            altToggle = cs == 's' ? !altToggle : 1;
+            break;
+        case 'G':
+        case 'g':
+            if (cs == 'G')
+                term.c = c[0] = c[IS_SET(MODE_ALTSCREEN) + 1];
+            if (!IS_SET(MODE_ALTSCREEN))
+                term.line = &buf[histOff = insertOff];
+            break;
+        case '0':
+            term.c.x = 0;
+            break;
+        case '$':
+            term.c.x = term.col - 1;
+            break;
+        case 't':
+            sel.type = sel.type == SEL_REGULAR ? SEL_RECTANGULAR : SEL_REGULAR;
+            break;
+        case 'n':
+        case 'N':
+            const int d = ((cs == 'N') != (state.m.search == bw)) ? -1 : 1;
+            for (uint32_t i = state.m.c; i && findString(d, 0); --i)
+                ;
+            break;
+        case 'w':
+        case 'W':
+        case 'e':
+        case 'E':
+        case 'b':
+        case 'B':
+            const int low = cs <= 90;
+            const int off = tolower(cs) != 'w';
+            const int sgn = (tolower(cs) == 'b') ? -1 : 1;
+
+            const size_t l     = strlen(wDelL);
+            const size_t s     = strlen(wDelS);
+            const size_t maxit = rows() * term.col;
+
+            for (int it = 0, on = 0; state.m.c > 0 && it < maxit; ++it) {
+                // if an offset is to be performed in beginning or not in beginning, move in history.
+                if ((off || it) && historyMove(sgn, 0, 0))
+                    break;
+
+                // determine if the category of the current letter changed since last iteration.
+                int n     = 1 << (contains(cChar(), wDelS, s) ? (2 - low) : !contains(cChar(), wDelL, l));
+                int found = (on |= n) ^ n && ((off ? on ^ n : n) != 1);
+                // if a reverse offset is to be performed and this is the last letter:
+                if (found && off)
+                    historyMove(-sgn, 0, 0);
+                // terminate iteration: reset #it and old n value #on and decrease operation count:
+                if (found)
+                    it = -1, on = 0, --state.m.c;
+            }
+            break;
+        default:
+            has_failed = 1;
+            break;
+        }
+    }
+
+    if (has_failed)
         return failed;
+
     state.m.c = 0;
     return state.cmd.op == yank ? exitMotion : success;
 }
