@@ -1,1 +1,1 @@
-int subprocwd(char *);
+int subprocwd(char*);

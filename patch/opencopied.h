@@ -1,1 +1,1 @@
-void opencopied(const Arg *);
+void opencopied(const Arg*);

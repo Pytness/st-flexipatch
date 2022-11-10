@@ -1,1 +1,1 @@
-void plumb(char *);
+void plumb(char*);

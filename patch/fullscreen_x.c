@@ -29,4 +29,3 @@ void toggle_fullscreen(const Arg* arg)
 {
     set_fullscreen_status(2);
 }
-

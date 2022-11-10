@@ -1,31 +1,26 @@
 #include <time.h>
 struct timespec sutv;
 
-static void
-tsync_begin()
+static void tsync_begin()
 {
-	clock_gettime(CLOCK_MONOTONIC, &sutv);
-	su = 1;
+    clock_gettime(CLOCK_MONOTONIC, &sutv);
+    su = 1;
 }
 
-static void
-tsync_end()
+static void tsync_end()
 {
-	su = 0;
+    su = 0;
 }
 
-int
-tinsync(uint timeout)
+int tinsync(uint timeout)
 {
-	struct timespec now;
-	if (su && !clock_gettime(CLOCK_MONOTONIC, &now)
-	       && TIMEDIFF(now, sutv) >= timeout)
-		su = 0;
-	return su;
+    struct timespec now;
+    if (su && !clock_gettime(CLOCK_MONOTONIC, &now) && TIMEDIFF(now, sutv) >= timeout)
+        su = 0;
+    return su;
 }
 
-int
-ttyread_pending()
+int ttyread_pending()
 {
-	return twrite_aborted;
+    return twrite_aborted;
 }

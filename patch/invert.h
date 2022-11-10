@@ -1,1 +1,1 @@
-static void invert(const Arg *);
+static void invert(const Arg*);
