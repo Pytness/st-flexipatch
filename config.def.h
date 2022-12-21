@@ -309,6 +309,8 @@ ResourcePref resources[] = {
 #endif  // RELATIVEBORDER_PATCH
     { "cwscale",        FLOAT,   &cwscale       },
     { "chscale",        FLOAT,   &chscale       },
+    { "cxoffset",       FLOAT,   &cxoffset      },
+    { "cyoffset",       FLOAT,   &cyoffset      },
 #if ALPHA_PATCH
     { "alpha",          FLOAT,   &alpha         },
 #endif  // ALPHA_PATCH
